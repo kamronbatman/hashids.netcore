@@ -5,7 +5,7 @@ using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace HashidsNet.test
+namespace HashidsNetCore.Tests
 {
     public class GeneralTests
     {

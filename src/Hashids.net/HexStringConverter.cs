@@ -1,7 +1,7 @@
 using System;
 using System.Buffers.Binary;
 
-namespace Hashids.net;
+namespace HashidsNetCore;
 
 public static class HexStringConverter
 {

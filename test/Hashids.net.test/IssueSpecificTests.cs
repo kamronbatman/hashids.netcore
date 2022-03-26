@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
 
-namespace HashidsNet.test
+namespace HashidsNetCore.Tests
 {
     public class IssueSpecificTests
     {
@@ -32,7 +32,7 @@ namespace HashidsNet.test
                 longs.Add(Math.Abs(randLong));
             }
 
-            var encoded = hash.EncodeLong(longs);
+            var encoded = hash.EncodeLong(longs.ToArray());
             var decoded = hash.DecodeLong(encoded);
             decoded.Should().Equal(longs.ToArray());
         }

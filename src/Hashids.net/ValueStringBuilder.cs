@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace System.Buffers;
 
@@ -36,18 +35,6 @@ public ref struct ValueStringBuilder
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString() => _chars[.._length].ToString();
-
-    /// <summary>Returns the underlying storage of the builder.</summary>
-    public Span<char> RawChars => _chars;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySpan<char> AsSpan() => _chars[.._length];
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySpan<char> AsSpan(int start) => _chars[start..];
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySpan<char> AsSpan(int start, int length) => _chars.Slice(start, length);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Insert(int index, char value)
@@ -110,19 +97,6 @@ public ref struct ValueStringBuilder
 
         value.CopyTo(_chars[_length..]);
         _length += value.Length;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Span<char> AppendSpan(int length)
-    {
-        var origPos = _length;
-        if (origPos > _chars.Length - length)
-        {
-            Grow(length);
-        }
-
-        _length = origPos + length;
-        return _chars.Slice(origPos, length);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]

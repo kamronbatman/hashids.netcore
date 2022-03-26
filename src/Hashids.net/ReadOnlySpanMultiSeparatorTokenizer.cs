@@ -14,8 +14,7 @@ namespace System.Buffers;
 /// </summary>
 /// <typeparam name="T">The type of items to enumerate.</typeparam>
 [EditorBrowsable(EditorBrowsableState.Never)]
-public ref struct ReadOnlySpanMultiTokenizer<T>
-    where T : IEquatable<T>
+public ref struct ReadOnlySpanMultiTokenizer<T> where T : IEquatable<T>
 {
     /// <summary>
     /// The source <see cref="ReadOnlySpan{T}"/> instance.
@@ -38,7 +37,7 @@ public ref struct ReadOnlySpanMultiTokenizer<T>
     private int end;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ReadOnlySpanTokenizer{T}"/> struct.
+    /// Initializes a new instance of the <see cref="ReadOnlySpanMultiTokenizer{T}"/> struct.
     /// </summary>
     /// <param name="span">The source <see cref="ReadOnlySpan{T}"/> instance.</param>
     /// <param name="separator">The separator item to use.</param>
@@ -54,7 +53,7 @@ public ref struct ReadOnlySpanMultiTokenizer<T>
     /// <summary>
     /// Implements the duck-typed <see cref="IEnumerable{T}.GetEnumerator"/> method.
     /// </summary>
-    /// <returns>An <see cref="ReadOnlySpanTokenizer{T}"/> instance targeting the current <see cref="ReadOnlySpan{T}"/> value.</returns>
+    /// <returns>An <see cref="ReadOnlySpanMultiTokenizer{T}"/> instance targeting the current <see cref="ReadOnlySpan{T}"/> value.</returns>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly ReadOnlySpanMultiTokenizer<T> GetEnumerator() => this;

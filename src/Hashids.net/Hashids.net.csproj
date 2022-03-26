@@ -2,18 +2,18 @@
 
     <PropertyGroup>
         <Title>Hashids.netcore</Title>
-        <Authors>Markus Ullmark</Authors>
+        <Authors>Markus Ullmark, Kamron Batman</Authors>
         <Version>2.0.0</Version>
         <PackageVersion>2.0.0</PackageVersion>
         <Description>Generate YouTube-like hashes from one or many numbers. Use hashids when you do not want to expose your database ids to the user.</Description>
         <PackageIconUrl>https://raw.githubusercontent.com/kamronbatman/hashids.netcore/main/hashids.png</PackageIconUrl>
-        <PackageProjectUrl>https://github.com/ullmark/hashids.net</PackageProjectUrl>
-        <PackageReleaseNotes>https://github.com/ullmark/hashids.net#changelog</PackageReleaseNotes>
+        <PackageProjectUrl>https://github.com/kamronbatman/hashids.netcore</PackageProjectUrl>
+        <PackageReleaseNotes>https://github.com/kamronbatman/hashids.netcore#changelog</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ids;hash</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/kamronbatman/hashids.netcore</RepositoryUrl>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>net5.0;net6.0;netstandard2.1</TargetFrameworks>
         <OutputType>Library</OutputType>
         <LangVersion>10</LangVersion>
         <IncludeSymbols>true</IncludeSymbols>
