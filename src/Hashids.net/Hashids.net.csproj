@@ -1,30 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Title>Hashids.net</Title>
-        <Authors>Markus Ullmark</Authors>
-        <Version>1.4.1</Version>
-        <PackageVersion>1.4.1</PackageVersion>
+        <Title>Hashids.netcore</Title>
+        <Authors>Markus Ullmark, Kamron Batman</Authors>
+        <Version>2.0.0</Version>
+        <PackageVersion>2.0.0</PackageVersion>
         <Description>Generate YouTube-like hashes from one or many numbers. Use hashids when you do not want to expose your database ids to the user.</Description>
-        <PackageIconUrl>https://raw.githubusercontent.com/ullmark/hashids.net/master/hashids.png</PackageIconUrl>
-        <PackageProjectUrl>https://github.com/ullmark/hashids.net</PackageProjectUrl>
-        <PackageReleaseNotes>https://github.com/ullmark/hashids.net#changelog</PackageReleaseNotes>
+        <PackageIconUrl>https://raw.githubusercontent.com/kamronbatman/hashids.netcore/main/hashids.png</PackageIconUrl>
+        <PackageProjectUrl>https://github.com/kamronbatman/hashids.netcore</PackageProjectUrl>
+        <PackageReleaseNotes>https://github.com/kamronbatman/hashids.netcore#changelog</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ids;hash</PackageTags>
         <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/ullmark/hashids.net</RepositoryUrl>
-        <TargetFrameworks>net461;net5.0;netstandard2.0</TargetFrameworks>
+        <RepositoryUrl>https://github.com/kamronbatman/hashids.netcore</RepositoryUrl>
+        <TargetFrameworks>net5.0;net6.0;netstandard2.1</TargetFrameworks>
         <OutputType>Library</OutputType>
-        <LangVersion>9</LangVersion>
+        <LangVersion>10</LangVersion>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <!-- CS1591: Missing XML comment for publicly visible type or member -->
         <NoWarn>$(NoWarn);CS1591</NoWarn>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="System.Buffers" Version="4.5.1" />
-    </ItemGroup>
-
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DefineConstants>TRACE;DEBUG</DefineConstants>
+        <Optimize>false</Optimize>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <Optimize>true</Optimize>
+    </PropertyGroup>
 </Project>

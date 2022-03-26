@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
 
-namespace HashidsNet.test
+namespace HashidsNetCore.Tests
 {
     public class IssueSpecificTests
     {
@@ -16,7 +16,7 @@ namespace HashidsNet.test
 
         // This issue came from downcasting to int at the wrong place,
         // seems to happen when you are encoding A LOT of longs at the same time.
-        // see if it is possible to make this a faster test (or remove it since it is unlikely that it will reapper).
+        // see if it is possible to make this a faster test (or remove it since it is unlikely that it will reappear).
         [Fact]
         void issue_12_should_not_throw_out_of_range_exception()
         {
@@ -32,7 +32,7 @@ namespace HashidsNet.test
                 longs.Add(Math.Abs(randLong));
             }
 
-            var encoded = hash.EncodeLong(longs);
+            var encoded = hash.EncodeLong(longs.ToArray());
             var decoded = hash.DecodeLong(encoded);
             decoded.Should().Equal(longs.ToArray());
         }
