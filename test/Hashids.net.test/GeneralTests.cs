@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace HashidsNet.test
 {
@@ -11,6 +11,13 @@ namespace HashidsNet.test
     {
         private const string salt = "this is my salt";
         private readonly Hashids _hashids = new Hashids(salt);
+
+        private readonly ITestOutputHelper output;
+
+        public GeneralTests(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
 
         [Fact]
         public async Task EncodingIsThreadSafe()
@@ -53,11 +60,11 @@ namespace HashidsNet.test
         [Fact]
         public void SingleInt_Decodes()
         {
-            _hashids.Decode("NkK9").Should().Equal(new[] { 12345 });
-            _hashids.Decode("5O8yp5P").Should().Equal(new[] { 666555444 });
-            _hashids.Decode("Wzo").Should().Equal(new[] { 1337 });
-            _hashids.Decode("DbE").Should().Equal(new[] { 808 });
-            _hashids.Decode("yj8").Should().Equal(new[] { 303 });
+            _hashids.Decode("NkK9").Should().Equal(12345);
+            _hashids.Decode("5O8yp5P").Should().Equal(666555444);
+            _hashids.Decode("Wzo").Should().Equal(1337);
+            _hashids.Decode("DbE").Should().Equal(808);
+            _hashids.Decode("yj8").Should().Equal(303);
         }
 
         [Fact]
@@ -74,12 +81,12 @@ namespace HashidsNet.test
         [Fact]
         public void SingleLong_Decode()
         {
-            _hashids.DecodeLong("NV").Should().Equal(new[] { 1L });
-            _hashids.DecodeLong("21OjjRK").Should().Equal(new[] { 2147483648L });
-            _hashids.DecodeLong("D54yen6").Should().Equal(new[] { 4294967296L });
-            _hashids.DecodeLong("KVO9yy1oO5j").Should().Equal(new[] { 666555444333222L });
-            _hashids.DecodeLong("4bNP1L26r").Should().Equal(new[] { 12345678901112L });
-            _hashids.DecodeLong("jvNx4BjM5KYjv").Should().Equal(new[] { Int64.MaxValue });
+            _hashids.DecodeLong("NV").Should().Equal(1L);
+            _hashids.DecodeLong("21OjjRK").Should().Equal(2147483648L);
+            _hashids.DecodeLong("D54yen6").Should().Equal(4294967296L);
+            _hashids.DecodeLong("KVO9yy1oO5j").Should().Equal(666555444333222L);
+            _hashids.DecodeLong("4bNP1L26r").Should().Equal(12345678901112L);
+            _hashids.DecodeLong("jvNx4BjM5KYjv").Should().Equal(Int64.MaxValue);
         }
 
         [Fact]
@@ -97,12 +104,12 @@ namespace HashidsNet.test
         [Fact]
         public void ListOfInt_Decodes()
         {
-            _hashids.Decode("1gRYUwKxBgiVuX").Should().Equal(new[] { 66655, 5444333, 2, 22 });
-            _hashids.Decode("aBMswoO2UB3Sj").Should().Equal(new[] { 683, 94108, 123, 5 });
-            _hashids.Decode("jYhp").Should().Equal(new[] { 3, 4 });
-            _hashids.Decode("k9Ib").Should().Equal(new[] { 6, 5 });
-            _hashids.Decode("EMhN").Should().Equal(new[] { 31, 41 });
-            _hashids.Decode("glSgV").Should().Equal(new[] { 13, 89 });
+            _hashids.Decode("1gRYUwKxBgiVuX").Should().Equal(66655, 5444333, 2, 22);
+            _hashids.Decode("aBMswoO2UB3Sj").Should().Equal(683, 94108, 123, 5);
+            _hashids.Decode("jYhp").Should().Equal(3, 4);
+            _hashids.Decode("k9Ib").Should().Equal(6, 5);
+            _hashids.Decode("EMhN").Should().Equal(31, 41);
+            _hashids.Decode("glSgV").Should().Equal(13, 89);
         }
 
         [Fact]
@@ -122,7 +129,7 @@ namespace HashidsNet.test
         [Fact]
         public void ListOfLong_Decodes()
         {
-            _hashids.DecodeLong("mPVbjj7yVMzCJL215n69").Should().Equal(new[] { 666555444333222L, 12345678901112L });
+            _hashids.DecodeLong("mPVbjj7yVMzCJL215n69").Should().Equal(666555444333222L, 12345678901112L);
         }
 
         [Fact]
@@ -157,16 +164,14 @@ namespace HashidsNet.test
         [Fact]
         public void HexString_Roundtrip()
         {
-            var hashids = new Hashids("this is my salt");
-
-            var encoded = hashids.EncodeHex("DEADBEEF");
+            var encoded = _hashids.EncodeHex("DEADBEEF");
             encoded.Should().Be("kRNrpKlJ");
 
-            var decoded = hashids.DecodeHex(encoded);
+            var decoded = _hashids.DecodeHex(encoded);
             decoded.Should().Be("DEADBEEF");
 
-            var input2 = "1234567890ABCDEF";
-            var decoded2 = hashids.DecodeHex(hashids.EncodeHex(input2));
+            const string input2 = "1234567890ABCDEF";
+            var decoded2 = _hashids.DecodeHex(_hashids.EncodeHex(input2));
             decoded2.Should().Be(input2);
         }
 
@@ -231,8 +236,8 @@ namespace HashidsNet.test
         [Fact]
         public void DifferentSalt_ReturnsEmptyList()
         {
-            _hashids.Decode("NkK9").Should().Equal(new[] { 12345 });
-            new Hashids("different salt").Decode("NkK9").Should().Equal(new int [0]);
+            _hashids.Decode("NkK9").Should().Equal(12345);
+            new Hashids("different salt").Decode("NkK9").Should().Equal();
         }
 
         [Fact]
@@ -248,9 +253,9 @@ namespace HashidsNet.test
         public void HashMinLength_Decodes()
         {
             var hashids = new Hashids(salt, 8);
-            hashids.Decode("gB0NV05e").Should().Equal(new[] { 1 });
-            hashids.Decode("mxi8XH87").Should().Equal(new[] { 25, 100, 950 });
-            hashids.Decode("KQcmkIW8hX").Should().Equal(new[] { 5, 200, 195, 1 });
+            hashids.Decode("gB0NV05e").Should().Equal(1);
+            hashids.Decode("mxi8XH87").Should().Equal(25, 100, 950);
+            hashids.Decode("KQcmkIW8hX").Should().Equal(5, 200, 195, 1);
         }
 
         [Fact]
@@ -265,14 +270,15 @@ namespace HashidsNet.test
         {
             var hashids = new Hashids(alphabet: "abcdefghijklmnopqrstuvwxyz1234567890_-");
             var input = new long[] { 1, 2, 3 };
-            var decodedValue = hashids.DecodeLong(hashids.EncodeLong(input));
+            var encodedHashIds = hashids.EncodeLong(input);
+            var decodedValue = hashids.DecodeLong(encodedHashIds);
             decodedValue.Should().BeEquivalentTo(input);
         }
 
         [Fact]
         public void AlphabetLessThanMinLength_ThrowsArgumentException()
         {
-            var tooShortAlphabet = Hashids.DEFAULT_ALPHABET.Substring(0, Hashids.MIN_ALPHABET_LENGTH - 1);
+            var tooShortAlphabet = Hashids.DEFAULT_ALPHABET[..(Hashids.MIN_ALPHABET_LENGTH - 1)];
             Action invocation = () => new Hashids(alphabet: tooShortAlphabet);
             invocation.Should().Throw<ArgumentException>();
         }
@@ -280,8 +286,8 @@ namespace HashidsNet.test
         [Fact]
         public void AlphabetAtLeastMinLength_ShouldNotThrowException()
         {
-            var minLengthAlphabet = Hashids.DEFAULT_ALPHABET.Substring(0, Hashids.MIN_ALPHABET_LENGTH);
-            var largerLengthAlphabet = Hashids.DEFAULT_ALPHABET.Substring(0, Hashids.MIN_ALPHABET_LENGTH + 1);
+            var minLengthAlphabet = Hashids.DEFAULT_ALPHABET[..Hashids.MIN_ALPHABET_LENGTH];
+            var largerLengthAlphabet = Hashids.DEFAULT_ALPHABET[..(Hashids.MIN_ALPHABET_LENGTH + 1)];
             var results1 = new Hashids(alphabet: minLengthAlphabet);
             var results2 = new Hashids(alphabet: largerLengthAlphabet);
         }
@@ -312,30 +318,12 @@ namespace HashidsNet.test
         }
 
         [Fact]
-        public void SaltIsLongerThanAlphabet_Roundtrip()
-        {
-            var longSalt = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            var hashids = new Hashids(salt: longSalt);
-            var input = new[] { 1, 2, 0 };
-            var decodedValue = hashids.Decode(hashids.Encode(input));
-            decodedValue.Should().Equal(input);
-        }
-
-        [Fact]
         public void GuardCharacterOnly_DecodesToEmptyArray()
         {
             // no salt creates guard characters: "abde"
             var hashids = new Hashids("");
             var decodedValue = hashids.Decode("a");
             decodedValue.Should().Equal(Array.Empty<int>());
-        }
-
-        [Fact]
-        public void PublicMethodsCanBeMocked()
-        {
-            var mock = new Mock<Hashids>();
-            mock.Setup(hashids => hashids.Encode(It.IsAny<int[]>())).Returns("It works");
-            mock.Object.Encode(new[] { 1 }).Should().Be("It works");
         }
     }
 }

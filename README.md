@@ -1,5 +1,5 @@
-# Hashids
-A small .NET package to generate YouTube-like IDs from numbers.
+# Hashids.NetCore
+A small .NET 6+ package to generate YouTube-like IDs from numbers.
 
 It converts numbers like `347` into strings like `yr8`, or array of numbers like `[27, 986]` into `3kTMd`. You can also decode those ids back. This is useful in bundling several parameters into one, hiding actual IDs, or simply using them as short string IDs.
 

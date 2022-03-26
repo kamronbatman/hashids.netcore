@@ -16,7 +16,7 @@ namespace HashidsNet.test
 
         // This issue came from downcasting to int at the wrong place,
         // seems to happen when you are encoding A LOT of longs at the same time.
-        // see if it is possible to make this a faster test (or remove it since it is unlikely that it will reapper).
+        // see if it is possible to make this a faster test (or remove it since it is unlikely that it will reappear).
         [Fact]
         void issue_12_should_not_throw_out_of_range_exception()
         {
